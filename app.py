@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
+from utils import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS
+from create_db import create_database
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:admin@localhost/coursedb'
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = SQLALCHEMY_TRACK_MODIFICATIONS
 app.debug = True
 app.secret_key = 'postgresisgood'
 
@@ -71,5 +73,6 @@ def register():
     return render_template("index.html", list_data=list_data)
 
 if __name__ == '__main__':
+    create_database()
     db.create_all()
-    app.run(debug=True,host='localhost')
+    app.run(debug=True,host='0.0.0.0')
