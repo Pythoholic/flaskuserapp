@@ -23,6 +23,13 @@ def check_value_greater_than_hundred(list_keys):
 
     return counter
 
+def check_monotonically_increasing(list_keys):
+    counter = 0
+    list_val = [int(val) for val in list_keys.values()]
+    if all(list_val[index] <= list_val[index + 1] for index in range(len(list_val) - 1)):
+        return 1
+    return 0
+
 def question1():
     # This is to read the csv file
     with open(sales_file, 'r') as fp:
@@ -85,6 +92,28 @@ def question3():
     print ('B.151-299', counter2)
     print ('C.ge 300', counter3)
 
+
+def question4():
+    # This is to read the csv file
+    with open(sales_file, 'r') as fp:
+        counter1 = counter2 = counter3 = 0
+        readcsv = csv.reader(fp)
+        # We dont want to read the first line as its just the header
+        sales_field = next(readcsv)
+        sales_cap = {}
+        # Read the data from the CSV
+        for data in readcsv:
+            sales_val = {data[0] : data[2]}
+            if data[1] not in sales_cap:
+                sales_cap[data[1]] = {}
+            sales_cap[data[1]].update(sales_val)
+
+        print ('Store', 'Mono_Flag')
+        for keys in sales_cap:
+            status = check_monotonically_increasing(sales_cap[keys])
+            print(keys, status)
+
 question1()
 question2()
 question3()
+question4()
